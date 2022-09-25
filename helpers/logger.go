@@ -29,13 +29,16 @@ func init() {
 		log.Fatalf("error in creating default logger:%s", err.Error())
 	}
 }
-func GetStructuredLogger(fileName string) (*zap.SugaredLogger, error) {
 
-	if strings.TrimSpace(fileName) == "" {
-		fileName = DEFAULT_LOGFILE_NAME
+//Create logfile with default name. You can configure name by providing it in the argument.
+//Defult file path is working directory. You can configure file-path by setting LOGFILE_PATH in .env file.
+func GetStructuredLogger(fileName ...string) (*zap.SugaredLogger, error) {
+
+	if len(fileName) == 0 || strings.TrimSpace(fileName[0]) == "" {
+		fileName[0] = DEFAULT_LOGFILE_NAME
 	}
 
-	logfileLocation := fmt.Sprintf("%s/%s", configs.GetEnvWithKey(KEY_LOGFILE_PATH, "."), fileName)
+	logfileLocation := fmt.Sprintf("%s/%s", configs.GetEnvWithKey(KEY_LOGFILE_PATH, "."), fileName[0])
 	var cfg zap.Config
 	cfg.OutputPaths = []string{logfileLocation}
 	cfg.Encoding = configs.GetEnvWithKey(KEY_LOGFILE_ENCODING, "json")

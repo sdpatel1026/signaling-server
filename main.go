@@ -5,14 +5,16 @@ import (
 	"log"
 	"net/http"
 	"signaling-server/configs"
+	"signaling-server/controllers"
 	"signaling-server/helpers"
 )
 
 func main() {
 	helpers.Logger.Info("signaling server start...")
-
-	http.HandleFunc("/create", CreateRoom)
-	http.HandleFunc("/join", JoinRoom)
+	controllers.AllRoom = new(controllers.Rooms)
+	controllers.AllRoom.New()
+	http.HandleFunc("/room", controllers.CreateRoom)
+	http.HandleFunc("/join", controllers.JoinRoom)
 	appPort := configs.GetEnvWithKey(configs.KEY_APP_PORT, "")
 	severAddres := fmt.Sprintf(":%s", appPort)
 	err := http.ListenAndServe(severAddres, nil)
