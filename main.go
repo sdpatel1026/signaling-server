@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"log"
 	"net/http"
-	"signaling-server/configs"
+	"os"
 	"signaling-server/controllers"
 	"signaling-server/helpers"
 )
@@ -16,8 +16,8 @@ func main() {
 	controllers.AllRoom.New()
 	http.HandleFunc("/room", controllers.CreateRoom)
 	http.HandleFunc("/join", controllers.JoinRoom)
-	appPort := configs.GetEnvWithKey(configs.KEY_APP_PORT, "8080")
-
+	// appPort := configs.GetEnvWithKey(configs.KEY_APP_PORT, "8080")
+	appPort := os.Getenv("PORT")
 	severAddres := fmt.Sprintf(":%s", appPort)
 	fmt.Println("port:", severAddres)
 	err := http.ListenAndServe(severAddres, nil)
