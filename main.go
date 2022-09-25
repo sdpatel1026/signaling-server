@@ -15,7 +15,7 @@ func main() {
 	controllers.AllRoom.New()
 	http.HandleFunc("/room", controllers.CreateRoom)
 	http.HandleFunc("/join", controllers.JoinRoom)
-	appPort := configs.GetEnvWithKey(configs.KEY_APP_PORT, "")
+	appPort := configs.GetEnvWithKey(configs.KEY_APP_PORT, "8000")
 	severAddres := fmt.Sprintf(":%s", appPort)
 	err := http.ListenAndServe(severAddres, nil)
 	if err != nil {
